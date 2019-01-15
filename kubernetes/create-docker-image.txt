@@ -1,0 +1,58 @@
+#go to base foler or cerate a folder to store image
+mkdir dimage
+cd dimage
+
+#create a Dockerfile - this will contain the config of the image
+vi Dockerfile
+
+#simple Dockerfile contents to run a simple python server
+# Import Python runtime and set up working directory
+FROM python:2.7-slim
+WORKDIR /app
+ADD . /app
+
+# Install any necessary dependencies
+RUN pip install -r requirements.txt
+
+# Open port 8080 for serving the webpage
+EXPOSE 8080
+
+# Run app.py when the container launches
+CMD ["python", "app.py"]
+
+#adding the requirements file listed in the Dockerfile
+vi requirements.txt
+
+Flask
+
+#add this to an app.py, this is the app
+from flask import Flask
+import os
+import socket
+
+app = Flask(__name__)
+
+@app.route("/")
+def hello():
+    html = "<h3>Hello, World!</h3>"
+    return html
+
+if __name__ == "__main__":
+  app.run(host='0.0.0.0', port=8080)
+
+#install flask local
+sudo pip install flask
+
+#run the app to make sure it works
+python app.py
+
+#create a docker image from the directory we are in
+docker build -t [image-name]
+
+#tag image
+docker tag [image] [registry-name]
+example: docker tag quickstart-image gcr.io/[PROJECT-ID]/quickstart-image
+
+#push image to repository
+gcloud docker -- push [HOSTNAME]/[PROJECT-ID]/[IMAGE]
+example: gcloud docker -- push gcr.io/[PROJECT-ID]/quickstart-image

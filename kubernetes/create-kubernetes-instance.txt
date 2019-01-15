@@ -1,0 +1,17 @@
+#remeber to set a zone
+gcloud config set compute/zone us-central1-a
+
+#create a cluster
+gcloud container clusters create [CLUSTER-NAME]
+
+#get credentials for kubectl
+gcloud container clusters get-credentials [CLUSTER-NAME]
+
+#deploy docker image using kubectl
+kubectl run hello-server --image=gcr.io/google-samples/hello-app:1.0 --port 8080
+
+#set up kubernetes loadbalancer
+kubectl expose deployment hello-server --type="LoadBalancer"
+
+#get info on status of service in kubernetes
+kubectl get service hello-server
